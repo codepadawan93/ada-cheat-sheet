@@ -3,6 +3,11 @@ import pandas as pd
 import numpy as np
 import seaborn as sb
 
+from sklearn.decomposition import PCA
+from sklearn.decomposition import FactorAnalysis
+from sklearn.cross_decomposition import CCA
+from sklearn.cluster import AgglomerativeClustering
+import scipy.cluster.hierarchy as hiclu
 
 # pandas
 data_frame = pd.read_csv("./resources/example_data.csv", index_col=0)
@@ -30,8 +35,8 @@ a = eigenvectors[reversed_eigenvalues]
 alpha = eigenvectors[:,reversed_eigenvalues]
 
 # plot.plot(alpha, correlation_data_frame.values, "r+")
-sb.heatmap(np.corrcoef(alpha), cmap='bwr', vmin=0, vmax=1, annot=True)
-plot.show()
+# sb.heatmap(np.corrcoef(alpha), cmap='bwr', vmin=0, vmax=1, annot=True)
+# plot.show()
 
 # graphics
 # draw a heatmap
@@ -67,4 +72,20 @@ plot.plot(data_xi, data_yi)
 # plot.show()
 
 # pca
+components = PCA().fit(data_frame).explained_variance_ratio_
+plot.plot([k*100 for k in components], data_frame.columns)
+plot.show()
 
+#efa
+factors = FactorAnalysis().fit(data_frame).components_
+plot.plot(data_frame.columns, factors)
+plot.show()
+
+#cca
+cca = CCA(n_components=4).fit(data_frame[data_frame.columns[:5]], data_frame[data_frame.columns[5:]])
+print(cca.x_scores_, cca.y_scores_, cca.x_loadings_, cca.y_loadings_)
+
+#hca
+clusters = AgglomerativeClustering(n_clusters=6, affinity='manhattan', linkage='average').fit(data_frame)
+print(clusters.labels_)
+hiclu.dendrogram(np.ndarray(clusters.labels_))
