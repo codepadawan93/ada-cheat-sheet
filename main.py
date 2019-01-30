@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sb
 
+
 # pandas
 data_frame = pd.read_csv("./resources/example_data.csv", index_col=0)
 data_frame.sort_values("globalRank")
@@ -45,7 +46,7 @@ y_series = [[10,1,6],
 heatmap_data = np.corrcoef(x_series, y_series)
 max = np.max(heatmap_data)
 min = np.min(heatmap_data)
-sb.heatmap(np.round(heatmap_data, 2), cmap='bwr', vmin=min, vmax=max, annot=True)
+# sb.heatmap(np.round(heatmap_data, 2), cmap='bwr', vmin=min, vmax=max, annot=True)
 
 # draw a circle
 data_x = np.random.uniform(-1, 1, (20))
@@ -64,3 +65,6 @@ data_yi = [x * np.random.uniform(1, -1) for x in data_xi]
 plot.figure("Line chart", figsize=(3, 6))
 plot.plot(data_xi, data_yi)
 # plot.show()
+
+# pca
+
